@@ -16,36 +16,38 @@ function findProjectRoot(): string {
   return process.cwd();
 }
 
-function resolveDbPath(): string | null {
+function resolveDbPath(): string {
   if (process.env.DB_PATH) {
-    const explicit = path.resolve(process.env.DB_PATH);
-    return fs.existsSync(explicit) ? explicit : null;
+    return path.resolve(process.env.DB_PATH);
   }
-
   const root = findProjectRoot();
-  const candidates = [
-    path.join(root, 'data', 'engine.sqlite'),
-    path.join(root, 'data', 'demo.sqlite'),
-    path.join(root, 'apps', 'dashboard', 'data', 'demo.sqlite'),
-  ];
+  return path.join(root, 'data', 'engine.sqlite');
+}
 
-  for (const candidate of candidates) {
-    if (fs.existsSync(candidate)) return candidate;
+export interface DbResolution {
+  db: Database.Database | null;
+  path: string;
+  error?: string;
+}
+
+export function getDbWithDebug(): DbResolution {
+  const dbPath = resolveDbPath();
+
+  if (_db) return { db: _db, path: dbPath };
+
+  if (!fs.existsSync(dbPath)) {
+    return { db: null, path: dbPath, error: 'file does not exist' };
   }
-  return null;
+
+  try {
+    _db = new Database(dbPath, { readonly: true });
+    _db.pragma('journal_mode = WAL');
+    return { db: _db, path: dbPath };
+  } catch (err) {
+    return { db: null, path: dbPath, error: err instanceof Error ? err.message : String(err) };
+  }
 }
 
 export function getDb(): Database.Database | null {
-  if (_db) return _db;
-
-  const dbPath = resolveDbPath();
-  if (!dbPath) return null;
-
-  try {
-    _db = new Database(dbPath, { readonly: true, fileMustExist: true });
-    _db.pragma('journal_mode = WAL');
-    return _db;
-  } catch {
-    return null;
-  }
+  return getDbWithDebug().db;
 }
