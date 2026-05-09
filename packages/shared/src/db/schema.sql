@@ -104,6 +104,15 @@ BEGIN
   );
 END;
 
+-- Trigger to keep trade_logs at max 5000 rows (covers ~40 hours at peak rate)
+CREATE TRIGGER IF NOT EXISTS trim_trade_logs
+AFTER INSERT ON trade_logs
+BEGIN
+  DELETE FROM trade_logs WHERE id <= (
+    SELECT id FROM trade_logs ORDER BY id DESC LIMIT 1 OFFSET 5000
+  );
+END;
+
 -- API metrics
 CREATE TABLE IF NOT EXISTS api_metrics (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -113,3 +122,12 @@ CREATE TABLE IF NOT EXISTS api_metrics (
   rate_limited INTEGER NOT NULL DEFAULT 0,
   created_at TEXT NOT NULL DEFAULT (datetime('now'))
 );
+
+-- Trigger to keep api_metrics at max 10000 rows (covers ~13 hours at peak rate)
+CREATE TRIGGER IF NOT EXISTS trim_api_metrics
+AFTER INSERT ON api_metrics
+BEGIN
+  DELETE FROM api_metrics WHERE id <= (
+    SELECT id FROM api_metrics ORDER BY id DESC LIMIT 1 OFFSET 10000
+  );
+END;
