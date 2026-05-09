@@ -1,0 +1,17 @@
+{
+  "name": "artomik",
+  "version": "0.1.0",
+  "private": true,
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "scripts": {
+    "dev": "bash scripts/dev.sh",
+    "build": "npm run build --workspace=packages/shared && npm run build --workspace=apps/engine && npm run build --workspace=apps/dashboard",
+    "setup": "bash scripts/setup.sh"
+  },
+  "engines": {
+    "node": ">=22.0.0"
+  }
+}
