@@ -24,30 +24,17 @@ function resolveDbPath(): string {
   return path.join(root, 'data', 'engine.sqlite');
 }
 
-export interface DbResolution {
-  db: Database.Database | null;
-  path: string;
-  error?: string;
-}
+export function getDb(): Database.Database | null {
+  if (_db) return _db;
 
-export function getDbWithDebug(): DbResolution {
   const dbPath = resolveDbPath();
-
-  if (_db) return { db: _db, path: dbPath };
-
-  if (!fs.existsSync(dbPath)) {
-    return { db: null, path: dbPath, error: 'file does not exist' };
-  }
+  if (!fs.existsSync(dbPath)) return null;
 
   try {
     _db = new Database(dbPath, { readonly: true });
     _db.pragma('journal_mode = WAL');
-    return { db: _db, path: dbPath };
-  } catch (err) {
-    return { db: null, path: dbPath, error: err instanceof Error ? err.message : String(err) };
+    return _db;
+  } catch {
+    return null;
   }
-}
-
-export function getDb(): Database.Database | null {
-  return getDbWithDebug().db;
 }
