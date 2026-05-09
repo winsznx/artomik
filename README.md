@@ -2,6 +2,8 @@
 
 An autonomous engine that chains 7 Jupiter APIs into a single execution loop: filter tokens by organic score → detect volatility anomalies → execute flashloan arbitrage → place OTOCO bracket hedges → take inverse prediction market positions → reinvest profits via DCA. Full-stack TypeScript monorepo with a Node.js daemon engine and a glassmorphism Next.js dashboard.
 
+**Live:** [artomik.xyz](https://artomik.xyz) — engine running on Railway against Jupiter mainnet APIs.
+
 ## Architecture
 
 ```
@@ -47,7 +49,7 @@ bash scripts/setup.sh      # installs deps, copies .env.example
 npm run dev                 # starts engine + dashboard
 ```
 
-Dashboard: http://localhost:3000
+Local dashboard: http://localhost:3000 · Live: [artomik.xyz](https://artomik.xyz)
 
 ## Dashboard
 
