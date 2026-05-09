@@ -3,6 +3,8 @@ import { getDb } from '@/lib/db';
 
 const EMPTY_STATE = { status: 'stopped', cycle_count: 0, total_pnl_usd: 0, loss_today_usd: 0, last_cycle_at: null };
 
+export const dynamic = 'force-dynamic';
+
 export async function GET() {
   const db = getDb();
   if (!db) return NextResponse.json(EMPTY_STATE);

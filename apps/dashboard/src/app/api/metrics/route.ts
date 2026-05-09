@@ -3,6 +3,8 @@ import { getDb } from '@/lib/db';
 
 const EMPTY_METRICS = { totalCalls: 0, rateLimitedCount: 0, successRate: 0, byEndpoint: [] };
 
+export const dynamic = 'force-dynamic';
+
 export async function GET() {
   const db = getDb();
   if (!db) return NextResponse.json(EMPTY_METRICS);
