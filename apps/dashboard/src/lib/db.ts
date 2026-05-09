@@ -3,7 +3,6 @@ import * as fs from 'node:fs';
 import * as path from 'node:path';
 
 let _db: Database.Database | null = null;
-let _resolved = false;
 
 function findProjectRoot(): string {
   let dir = process.cwd();
@@ -37,8 +36,7 @@ function resolveDbPath(): string | null {
 }
 
 export function getDb(): Database.Database | null {
-  if (_resolved) return _db;
-  _resolved = true;
+  if (_db) return _db;
 
   const dbPath = resolveDbPath();
   if (!dbPath) return null;
