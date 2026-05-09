@@ -42,7 +42,7 @@ An autonomous engine that chains 7 Jupiter APIs into a single execution loop: fi
 ## Quick Start
 
 ```bash
-git clone <repo>
+git clone https://github.com/winsznx/artomik.git
 cd artomik
 bash scripts/setup.sh      # installs deps, copies .env.example
 # Edit .env with your PRIVATE_KEY, HELIUS_API_KEY
