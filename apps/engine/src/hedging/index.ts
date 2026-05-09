@@ -1,0 +1,12 @@
+export { VaultManager } from './vaultManager.js';
+export type { VaultInfo } from './vaultManager.js';
+export { OtocoBuilder } from './otocoBuilder.js';
+export type { OtocoParams, OtocoOrderResult, OtocoOrder } from './otocoBuilder.js';
+export { MarketScanner } from './marketScanner.js';
+export type { PredictionEventInfo, PredictionMarketInfo } from './marketScanner.js';
+export { CorrelationEngine } from './correlationEngine.js';
+export type { HedgeRecommendation } from './correlationEngine.js';
+export { PredictionOrderPlacer } from './predictionOrderPlacer.js';
+export type { PredictionOrderResult } from './predictionOrderPlacer.js';
+export { DcaScheduler } from './dcaScheduler.js';
+export type { DcaOrderResult } from './dcaScheduler.js';
